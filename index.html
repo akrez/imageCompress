@@ -5,105 +5,58 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="JavaScript image compressor.">
-    <meta name="author" content="Chen Fengyuan">
-    <title>Compressor.js</title>
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap@4/dist/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/main.css">
+    <link href="favicon.svg" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+    <link rel="shortcut icon" href="./favicon.svg">
+    <title>Image Compressor</title>
+    <link rel="stylesheet" href="./plugins/bootstrap/css/bootstrap.rtl.css">
+    <link rel="stylesheet" href="./plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./plugins/sahel/css/sahel.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        body {
+            direction: rtl;
+        }
+    </style>
 </head>
 
 <body>
-    <header class="navbar navbar-light navbar-expand-md">
-        <div class="container">
-            <a class="navbar-brand" href="./">Compressor.js</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
-                aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbar-collapse" role="navigation">
-                <ul class="nav navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="https://github.com/fengyuanchen/compressorjs/blob/main/README.md">Docs</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Examples
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="examples/grayscale.html">Grayscale</a>
-                            <a class="dropdown-item" href="examples/watermark.html">Watermark</a>
-                            <a class="dropdown-item" href="examples/work-with-promise.html">Work with promise</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="https://github.com/fengyuanchen/compressorjs"
-                            title="View the GitHub project">GitHub</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="https://fengyuanchen.github.io/"
-                            title="Explore more projects">Explore</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="https://chenfengyuan.com/" title="About the author">About</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </header>
-
-    <div class="jumbotron bg-primary text-white rounded-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-md">
-                    <h1>Compressor.js <small class="h6">v1.2.1</small></h1>
-                    <p class="lead">JavaScript image compressor.</p>
-                </div>
-                <div class="col-md">
-                    <div class="carbonads">
-                        <script id="_carbonads_js"
-                            src="https://cdn.carbonads.com/carbon.js?serve=CKYI55Q7&placement=fengyuanchengithubio"
-                            async></script>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="container">
-        <h3>Playground</h3>
-        <hr>
-        <div id="app" v-cloak>
-            <div class="card bg-light mb-4" @change="change" @dragover="dragover" @drop="drop">
+        <div x-data="app()">
+            <div class="card bg-light my-4">
                 <div class="card-body">
-                    <div class="p-5 text-center">Drop image here or <label class="text-primary">browse... <input
-                                type="file" class="sr-only" id="file" accept="image/*" ref="input"></label></div>
+                    <div class="p-5 text-center">
+                        <label class="text-primary">
+                            عکس ها را انتخاب کنید
+                            <input x-ref="inputs" type="file" multiple class="sr-only" accept="image/*"
+                                x-on:change="upload">
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100">
-                        <h4 class="card-header">Options</h4>
+                        <h4 class="card-header">تنظیمات</h4>
                         <div class="card-body">
                             <fieldset class="form-group">
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" name="strict" class="form-check-input" id="inputStrict"
-                                        v-model="options.strict">
+                                        x-model="options.strict">
                                     <label class="form-check-label" for="inputStrict">strict</label>
                                 </div>
                             </fieldset>
                             <fieldset class="form-group">
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" name="checkOrientation" class="form-check-input"
-                                        id="inputCheckOrientation" v-model="options.checkOrientation">
+                                        id="inputCheckOrientation" x-model="options.checkOrientation">
                                     <label class="form-check-label" for="inputCheckOrientation">checkOrientation</label>
                                 </div>
                             </fieldset>
                             <fieldset class="form-group">
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" name="retainExif" class="form-check-input"
-                                        id="inputRetainExif" v-model="options.retainExif">
+                                        id="inputRetainExif" x-model="options.retainExif">
                                     <label class="form-check-label" for="inputRetainExif">retainExif</label>
                                 </div>
                             </fieldset>
@@ -111,49 +64,49 @@
                                 <label for="inputMaxWidth" class="col-5 col-form-label">maxWidth</label>
                                 <div class="col-7">
                                     <input type="number" name="maxWidth" class="form-control" id="inputMaxWidth"
-                                        placeholder="Infinity" v-model.number="options.maxWidth">
+                                        placeholder="Infinity" x-model.number="options.maxWidth">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputMaxHeight" class="col-5 col-form-label">maxHeight</label>
                                 <div class="col-7">
                                     <input type="number" name="maxHeight" class="form-control" id="inputMaxHeight"
-                                        placeholder="Infinity" v-model.number="options.maxHeight">
+                                        placeholder="Infinity" x-model.number="options.maxHeight">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputMinWidth" class="col-5 col-form-label">minWidth</label>
                                 <div class="col-7">
                                     <input type="number" name="minWidth" class="form-control" id="inputMinWidth"
-                                        placeholder="0" v-model.number="options.minWidth">
+                                        placeholder="0" x-model.number="options.minWidth">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputMinHeight" class="col-5 col-form-label">minHeight</label>
                                 <div class="col-7">
                                     <input type="number" name="minHeight" class="form-control" id="inputMinHeight"
-                                        placeholder="0" v-model.number="options.minHeight">
+                                        placeholder="0" x-model.number="options.minHeight">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputWidth" class="col-5 col-form-label">width</label>
                                 <div class="col-7">
                                     <input type="number" name="width" class="form-control" id="inputWidth"
-                                        placeholder="undefined" v-model.number="options.width">
+                                        placeholder="undefined" x-model.number="options.width">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputHeight" class="col-5 col-form-label">height</label>
                                 <div class="col-7">
                                     <input type="number" name="height" class="form-control" id="inputHeight"
-                                        placeholder="undefined" v-model.number="options.height">
+                                        placeholder="undefined" x-model.number="options.height">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputResize" class="col-5 col-form-label">resize</label>
                                 <div class="col-7">
                                     <select class="form-control" name="resize" id="inputResize"
-                                        v-model.number="options.resize">
+                                        x-model.number="options.resize">
                                         <option value="none">none</option>
                                         <option value="contain">contain</option>
                                         <option value="cover">cover</option>
@@ -164,7 +117,7 @@
                                 <label for="inputQuality" class="col-5 col-form-label">quality</label>
                                 <div class="col-7">
                                     <select class="form-control" name="quality" id="inputQuality"
-                                        v-model.number="options.quality">
+                                        x-model.number="options.quality">
                                         <option value="0">0</option>
                                         <option value="0.1">0.1</option>
                                         <option value="0.2">0.2</option>
@@ -176,7 +129,7 @@
                                         <option value="0.8">0.8</option>
                                         <option value="0.9">0.9</option>
                                         <option value="1">1</option>
-                                        <option value="">NaN</option>
+                                        <option value=""></option>
                                     </select>
                                 </div>
                             </div>
@@ -184,125 +137,139 @@
                                 <label for="inputMimeType" class="col-5 col-form-label">mimeType</label>
                                 <div class="col-7">
                                     <input type="text" name="mimeType" class="form-control" id="inputMimeType"
-                                        placeholder="auto" v-model.number="options.mimeType">
+                                        placeholder="auto" x-model.number="options.mimeType">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputConvertTypes" class="col-5 col-form-label">convertTypes</label>
                                 <div class="col-7">
                                     <input type="text" name="convertTypes" class="form-control" id="inputConvertTypes"
-                                        placeholder="image/png" v-model="options.convertTypes">
+                                        placeholder="image/png" x-model="options.convertTypes">
                                 </div>
                             </div>
                             <div class="form-group row mb-0">
                                 <label for="inputConvertSize" class="col-5 col-form-label">convertSize</label>
                                 <div class="col-7">
                                     <input type="number" name="convertSize" class="form-control" id="inputConvertSize"
-                                        placeholder="5000000" v-model.number="options.convertSize">
+                                        placeholder="5000000" x-model.number="options.convertSize">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-8 mb-4">
-                    <div class="card mb-4">
-                        <h5 class="card-header d-flex align-items-center justify-content-between">
-                            <span>Input image <small class="text-secondary">(original image)</small></span>
-                            <a class="btn btn-sm btn-blocks btn-outline-primary" :download="input.name" :href="inputURL"
-                                title="Download the compressed image">Download</a>
-                        </h5>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 d-flex mb-3">
-                                    <div class="w-100 text-center" v-if="inputURL">
-                                        <img class="mw-100" :src="inputURL" :alt="input.name">
-                                    </div>
-                                    <div v-else class="w-100 bg-light"></div>
-                                </div>
-                                <div class="col-md-8">
-                                    <dl class="row">
-                                        <dt class="col-5">lastModified:</dt>
-                                        <dd class="col-7">{{ input.lastModified || 'N/A' }}</dd>
-                                        <dt class="col-5">lastModifiedDate:</dt>
-                                        <dd class="col-7">{{ input.lastModifiedDate || 'N/A' }}</dd>
-                                        <dt class="col-5">name:</dt>
-                                        <dd class="col-7">{{ input.name || 'N/A' }}</dd>
-                                        <dt class="col-5">type:</dt>
-                                        <dd class="col-7">{{ input.type || 'N/A' }}</dd>
-                                        <dt class="col-5">size:</dt>
-                                        <dd class="col-7">{{ input.size | prettySize }}</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h5 class="card-header d-flex align-items-center justify-content-between">
-                            <span>Output image <small class="text-secondary">(compressed image)</small></span>
-                            <a class="btn btn-sm btn-blocks btn-outline-primary" :download="output.name"
-                                :href="outputURL" title="Download the compressed image">Download</a>
-                        </h5>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 d-flex mb-3">
-                                    <div class="w-100 text-center" v-if="outputURL">
-                                        <img class="mw-100" :src="outputURL" :alt="output.name">
-                                    </div>
-                                    <div v-else class="w-100 bg-light"></div>
-                                </div>
-                                <div class="col-md-8">
-                                    <dl class="row">
-                                        <dt class="col-5">lastModified:</dt>
-                                        <dd class="col-7">{{ output.lastModified || 'N/A' }}</dd>
-                                        <dt class="col-5">lastModifiedDate:</dt>
-                                        <dd class="col-7">{{ output.lastModifiedDate || 'N/A' }}</dd>
-                                        <dt class="col-5">name:</dt>
-                                        <dd class="col-7">{{ output.name || 'N/A' }}</dd>
-                                        <dt class="col-5">type:</dt>
-                                        <dd class="col-7">{{ output.type || 'N/A' }}</dd>
-                                        <dt class="col-5">size:</dt>
-                                        <dd class="col-7">{{ output.size | prettySize }}
-                                            <span v-if="output.size">({{ ((1 - (output.size / input.size)) *
-                                                100).toFixed(2) }}% off)</span>
-                                        </dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card" v-if="inputURL && outputURL">
-                <h4 class="card-header">Comparing images</h4>
-                <div class="card-body">
-                    <vue-compare-image v-if="inputURL && outputURL" :left-image="inputURL" :left-image-alt="input.name"
-                        left-label="Input image" :right-image="outputURL" :right-image-alt="output.name"
-                        right-label="Output image"></vue-compare-image>
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">عکس فشرده شده</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-if="options.files.length > 0">
+                                <template x-for="file in options.files">
+                                    <tr>
+                                        <td>
+                                            <img :src="file.src" :class='{"img-fluid":true}'>
+                                        </td>
+                                        <td>Otto</td>
+                                    </tr>
+                                </template>
+                                <tr>
+                                    <td>
+                                        <div class="btn btn-primary w-100" @click="downloadAll">
+                                            Download All
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </template>
+                            <template x-if="options.files.length == 0">
+                                <tr>
+                                    <td colspan="2">
+                                        no files
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p class="heart"></p>
-            <nav class="nav flex-wrap justify-content-center mb-3">
-                <a class="nav-link" href="https://github.com/fengyuanchen/compressorjs">GitHub</a>
-                <a class="nav-link" href="https://github.com/fengyuanchen/compressorjs/releases">Releases</a>
-                <a class="nav-link" href="https://github.com/fengyuanchen/compressorjs/blob/main/LICENSE">License</a>
-                <a class="nav-link" href="https://chenfengyuan.com/">About</a>
-            </nav>
-        </div>
-    </footer>
+    <script src="./plugins/compressorjs/compressor.js"></script>
+    <script src="./plugins/jszip.min.js"></script>
+    <script src="./plugins/FileSaver.min.js" defer></script>
+    <script src="./plugins/alpinejs.js" defer></script>
+    <script>
+        const prettySize = (size) => {
+            var kilobyte = 1024;
+            var megabyte = kilobyte * kilobyte;
 
-    <script src="https://unpkg.com/jquery@3/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/bootstrap@4/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/vue@2/dist/vue.min.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/vue-compare-image@0.2/dist/vueCompareImage.umd.min.js"
-        crossorigin="anonymous"></script>
-    <script src="https://fengyuanchen.github.io/shared/google-analytics.js" crossorigin="anonymous"></script>
-    <script src="js/compressor.js"></script>
-    <script src="js/main.js"></script>
+            if (size > megabyte) {
+                return (size / megabyte).toFixed(2) + ' MB';
+            } else if (size > kilobyte) {
+                return (size / kilobyte).toFixed(2) + ' KB';
+            } else if (size >= 0) {
+                return size + ' B';
+            }
+
+            return 'N/A';
+        }
+
+        function app() {
+            var URL = window.URL || window.webkitURL;
+            let files = [];
+            return {
+                files: files,
+                options: {
+                    files: [],
+                    //
+                    strict: true,
+                    checkOrientation: true,
+                    retainExif: false,
+                    maxWidth: undefined,
+                    maxHeight: undefined,
+                    minWidth: 0,
+                    minHeight: 0,
+                    width: undefined,
+                    height: undefined,
+                    resize: 'none',
+                    quality: 0.8,
+                    mimeType: '',
+                    convertTypes: 'image/png',
+                    convertSize: 5000000,
+                    //
+                    success: function (blob) {
+                        this.src = URL.createObjectURL(blob);
+                        console.log(this);
+                        this.options.files.push(this);
+                    },
+                    error: function (err) {
+                        console.log(this);
+                        window.alert(this.file.name + "\n" + err.message);
+                    },
+                },
+                upload(e) {
+                    this.options.files = [];
+                    for (i = 0; i < e.target.files.length; i++) {
+                        new Compressor(e.target.files[i], this.options);
+                    }
+                },
+                downloadAll() {
+                    var zip = new JSZip();
+                    for (i = 0; i < this.options.files.length; i++) {
+                        let fileName = this.options.files[i].file.name;
+                        zip.file(fileName, this.options.files[i].result, { binary: true });
+                    }
+                    zip.generateAsync({ type: "blob" }).then(function (content) {
+                        saveAs(content, "example.zip");
+                    });
+                }
+            };
+        }
+    </script>
 </body>
 
 </html>
