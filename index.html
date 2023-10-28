@@ -10,199 +10,79 @@
     <title>Image Compressor</title>
     <link rel="stylesheet" href="./plugins/bootstrap/css/bootstrap.rtl.css">
     <link rel="stylesheet" href="./plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./plugins/bootstrap-social-rtl.css">
     <link rel="stylesheet" href="./plugins/sahel/css/sahel.css">
-    <link rel="stylesheet" href="./css/style.css">
     <style>
+        html,
         body {
+            font-family: "sahel" !important;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
             direction: rtl;
+        }
+
+        .p-rl-4 {
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+
+        .splash {
+            background-image: url('loading.svg');
+            background-color: rgba(0, 0, 0, 0.3);
+            inset: 0px;
+            position: absolute;
+            z-index: 9998;
+            background-repeat: no-repeat;
+            background-position: center;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <div x-data="app()">
-            <div class="card bg-light my-4">
-                <div class="card-body">
-                    <div class="p-5 text-center">
-                        <label class="text-primary">
-                            عکس ها را انتخاب کنید
-                            <input x-ref="inputs" type="file" multiple class="sr-only" accept="image/*"
-                                x-on:change="upload">
-                        </label>
-                    </div>
-                </div>
+    <div class="container" id="app">
+        <div class="row mt-4">
+            <div class="col-12">
+                <label for="fileUploadInput" class="btn btn-primary btn-lg btn-social w-100 py-5">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    عکس های خود را اضافه کنید
+                </label>
+                <input type="file" multiple class="d-none" accept="image/*" id="fileUploadInput">
             </div>
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <div class="card h-100">
-                        <h4 class="card-header">تنظیمات</h4>
-                        <div class="card-body">
-                            <fieldset class="form-group">
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="strict" class="form-check-input" id="inputStrict"
-                                        x-model="options.strict">
-                                    <label class="form-check-label" for="inputStrict">strict</label>
-                                </div>
-                            </fieldset>
-                            <fieldset class="form-group">
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="checkOrientation" class="form-check-input"
-                                        id="inputCheckOrientation" x-model="options.checkOrientation">
-                                    <label class="form-check-label" for="inputCheckOrientation">checkOrientation</label>
-                                </div>
-                            </fieldset>
-                            <fieldset class="form-group">
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="retainExif" class="form-check-input"
-                                        id="inputRetainExif" x-model="options.retainExif">
-                                    <label class="form-check-label" for="inputRetainExif">retainExif</label>
-                                </div>
-                            </fieldset>
-                            <div class="form-group row">
-                                <label for="inputMaxWidth" class="col-5 col-form-label">maxWidth</label>
-                                <div class="col-7">
-                                    <input type="number" name="maxWidth" class="form-control" id="inputMaxWidth"
-                                        placeholder="Infinity" x-model.number="options.maxWidth">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputMaxHeight" class="col-5 col-form-label">maxHeight</label>
-                                <div class="col-7">
-                                    <input type="number" name="maxHeight" class="form-control" id="inputMaxHeight"
-                                        placeholder="Infinity" x-model.number="options.maxHeight">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputMinWidth" class="col-5 col-form-label">minWidth</label>
-                                <div class="col-7">
-                                    <input type="number" name="minWidth" class="form-control" id="inputMinWidth"
-                                        placeholder="0" x-model.number="options.minWidth">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputMinHeight" class="col-5 col-form-label">minHeight</label>
-                                <div class="col-7">
-                                    <input type="number" name="minHeight" class="form-control" id="inputMinHeight"
-                                        placeholder="0" x-model.number="options.minHeight">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputWidth" class="col-5 col-form-label">width</label>
-                                <div class="col-7">
-                                    <input type="number" name="width" class="form-control" id="inputWidth"
-                                        placeholder="undefined" x-model.number="options.width">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputHeight" class="col-5 col-form-label">height</label>
-                                <div class="col-7">
-                                    <input type="number" name="height" class="form-control" id="inputHeight"
-                                        placeholder="undefined" x-model.number="options.height">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputResize" class="col-5 col-form-label">resize</label>
-                                <div class="col-7">
-                                    <select class="form-control" name="resize" id="inputResize"
-                                        x-model.number="options.resize">
-                                        <option value="none">none</option>
-                                        <option value="contain">contain</option>
-                                        <option value="cover">cover</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputQuality" class="col-5 col-form-label">quality</label>
-                                <div class="col-7">
-                                    <select class="form-control" name="quality" id="inputQuality"
-                                        x-model.number="options.quality">
-                                        <option value="0">0</option>
-                                        <option value="0.1">0.1</option>
-                                        <option value="0.2">0.2</option>
-                                        <option value="0.3">0.3</option>
-                                        <option value="0.4">0.4</option>
-                                        <option value="0.5">0.5</option>
-                                        <option value="0.6">0.6</option>
-                                        <option value="0.7">0.7</option>
-                                        <option value="0.8">0.8</option>
-                                        <option value="0.9">0.9</option>
-                                        <option value="1">1</option>
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputMimeType" class="col-5 col-form-label">mimeType</label>
-                                <div class="col-7">
-                                    <input type="text" name="mimeType" class="form-control" id="inputMimeType"
-                                        placeholder="auto" x-model.number="options.mimeType">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputConvertTypes" class="col-5 col-form-label">convertTypes</label>
-                                <div class="col-7">
-                                    <input type="text" name="convertTypes" class="form-control" id="inputConvertTypes"
-                                        placeholder="image/png" x-model="options.convertTypes">
-                                </div>
-                            </div>
-                            <div class="form-group row mb-0">
-                                <label for="inputConvertSize" class="col-5 col-form-label">convertSize</label>
-                                <div class="col-7">
-                                    <input type="number" name="convertSize" class="form-control" id="inputConvertSize"
-                                        placeholder="5000000" x-model.number="options.convertSize">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-8 mb-4">
-                    <table class="table table-hover table-bordered">
-                        <thead class="table-light">
-                            <tr>
-                                <th scope="col">عکس فشرده شده</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template x-if="options.files.length > 0">
-                                <template x-for="file in options.files">
-                                    <tr>
-                                        <td>
-                                            <img :src="file.src" :class='{"img-fluid":true}'>
-                                        </td>
-                                        <td>Otto</td>
-                                    </tr>
-                                </template>
-                                <tr>
-                                    <td>
-                                        <div class="btn btn-primary w-100" @click="downloadAll">
-                                            Download All
-                                        </div>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </template>
-                            <template x-if="options.files.length == 0">
-                                <tr>
-                                    <td colspan="2">
-                                        no files
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-4 g-4 my-4" id="fileUploadedImages">
+        </div>
+        <div class="row my-4">
+            <div class="col-sm-8">
+                <button class="btn btn-success btn-lg btn-social w-100 downloadButton">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    دانلود همه عکسهای فشرده شده
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-danger btn-lg btn-social w-100 deleteButton">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    حذف همه عکسهای فشرده شده
+                </button>
             </div>
         </div>
     </div>
 
+    <script src="./plugins/jquery/jquery.min.js"></script>
     <script src="./plugins/compressorjs/compressor.js"></script>
     <script src="./plugins/jszip.min.js"></script>
-    <script src="./plugins/FileSaver.min.js" defer></script>
-    <script src="./plugins/alpinejs.js" defer></script>
+    <script src="./plugins/FileSaver/FileSaver.min.js"></script>
+
     <script>
+
+        let myFiles = [];
+
+        const encodeHTML = (str) => {
+            return str.replace(/javascript:/gi, '').replace(/[^\w-_. ]/gi, function (c) {
+                return `&#${c.charCodeAt(0)};`;
+            });
+        }
+
         const prettySize = (size) => {
             var kilobyte = 1024;
             var megabyte = kilobyte * kilobyte;
@@ -218,57 +98,143 @@
             return 'N/A';
         }
 
-        function app() {
-            var URL = window.URL || window.webkitURL;
-            let files = [];
-            return {
-                files: files,
-                options: {
-                    files: [],
-                    //
-                    strict: true,
-                    checkOrientation: true,
-                    retainExif: false,
-                    maxWidth: undefined,
-                    maxHeight: undefined,
-                    minWidth: 0,
-                    minHeight: 0,
-                    width: undefined,
-                    height: undefined,
-                    resize: 'none',
-                    quality: 0.8,
-                    mimeType: '',
-                    convertTypes: 'image/png',
-                    convertSize: 5000000,
-                    //
-                    success: function (blob) {
-                        this.src = URL.createObjectURL(blob);
-                        console.log(this);
-                        this.options.files.push(this);
-                    },
-                    error: function (err) {
-                        console.log(this);
-                        window.alert(this.file.name + "\n" + err.message);
-                    },
-                },
-                upload(e) {
-                    this.options.files = [];
-                    for (i = 0; i < e.target.files.length; i++) {
-                        new Compressor(e.target.files[i], this.options);
-                    }
-                },
-                downloadAll() {
-                    var zip = new JSZip();
-                    for (i = 0; i < this.options.files.length; i++) {
-                        let fileName = this.options.files[i].file.name;
-                        zip.file(fileName, this.options.files[i].result, { binary: true });
-                    }
-                    zip.generateAsync({ type: "blob" }).then(function (content) {
-                        saveAs(content, "example.zip");
-                    });
+        const downloadAction = (myFileIndex = '') => {
+            if (myFileIndex) {
+                saveAs(myFiles[myFileIndex].blob, myFiles[myFileIndex].blob.name);
+            } else {
+                var zip = new JSZip();
+                downloadList = myFiles;
+                for (const downloadFile of downloadList) {
+                    let fileName = downloadFile.input.name;
+                    zip.file(fileName, downloadFile.blob, { binary: true });
                 }
-            };
+                zip.generateAsync({ type: "blob" })
+                    .then(function (content) {
+                        console.log(content);
+                    });
+            }
+
         }
+
+        const deleteAction = (myFileIndex = '') => {
+            if (myFileIndex) {
+                myFiles.splice(myFileIndex, 1);
+            } else {
+                myFiles.splice(0, myFiles.length);
+            }
+            renderAll()
+        }
+
+        function renderAll() {
+            $("#fileUploadedImages").html('');
+            myFileIndex = 0;
+            for (const myFile of myFiles) {
+                if (myFile.src) {
+                    $("#fileUploadedImages").prepend(`<div class="col">
+                        <div class="card">
+                            <img src="` + myFile.src + `" class="">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">` + encodeHTML(myFile.input.name) + `</li>
+                                <li class="list-group-item">` + prettySize(myFile.input.size) + `</li>
+                                <li class="list-group-item">` + prettySize(myFile.blob.size) + `</li>
+                                <li class="list-group-item">`+ parseInt((myFile.blob.size / myFile.input.size) * 100) + `%</li>
+                            </ul>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-sm-8 p-rl-4">
+                                        <button class="btn btn-success btn-sm btn-social w-100 downloadButton" data-myFile-index="`+ myFileIndex + `">
+                                            <i class="fa fa-download" aria-hidden="true"></i>
+                                            دانلود
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-4 p-rl-4">
+                                        <button class="btn btn-danger btn-sm btn-social w-100 deleteButton" data-myFile-index="`+ myFileIndex + `">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                            حذف
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`);
+                }
+                myFileIndex++;
+            }
+        }
+
+        async function compressAll(force = false) {
+            $("#app").addClass('splash');
+            let changedMyFileIndex = [];
+            myFileIndex = 0;
+            for (const myFile of myFiles) {
+                if (force || myFile.blob == null) {
+                    let promise = new Promise((resolve, reject) => {
+                        new Compressor(myFile.input, {
+                            strict: true,
+                            checkOrientation: true,
+                            retainExif: false,
+                            maxWidth: undefined,
+                            maxHeight: undefined,
+                            minWidth: 0,
+                            minHeight: 0,
+                            width: undefined,
+                            height: undefined,
+                            resize: 'none',
+                            quality: 0.8,
+                            mimeType: '',
+                            convertTypes: 'image/png',
+                            convertSize: 5000000,
+                            //
+                            success: (blob) => {
+                                resolve(blob);
+                            },
+                            error: (error) => {
+                                reject(error);
+                            },
+                        });
+                    });
+                    await promise
+                        .then(blob => {
+                            myFiles[myFileIndex].blob = blob;
+                            myFiles[myFileIndex].src = URL.createObjectURL(blob);
+                            changedMyFileIndex.push(myFileIndex);
+                        })
+                        .catch(error => {
+                            alert(error.message)
+                        });
+                }
+                myFileIndex++;
+            }
+            $("#app").removeClass('splash');
+            return changedMyFileIndex;
+        }
+
+        async function process(files) {
+            for (i = 0; i < files.length; i++) {
+                await myFiles.push({
+                    input: files[i],
+                    blob: null,
+                    src: null,
+                });
+            }
+            await compressAll();
+            await renderAll();
+        }
+
+        $(function () {
+            $(document).on('change', '#fileUploadInput', function (e) {
+                process(e.target.files);
+            });
+            $(document).on('click', '.downloadButton', function (e) {
+                index = $(this).attr('data-myFile-index') || '';
+                downloadAction(index);
+            });
+            $(document).on('click', '.deleteButton', function (e) {
+                index = $(this).attr('data-myFile-index') || '';
+                deleteAction(index);
+            });
+        })
+
     </script>
 </body>
 
